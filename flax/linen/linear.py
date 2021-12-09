@@ -237,7 +237,7 @@ class Conv(Module):
   @compact
   def __call__(self, inputs: Array) -> Array:
     """Applies a convolution to the inputs.
- 
+
     Args:
       inputs: input data with dimensions (batch, spatial_dims..., features).
         This is the channels-last convention, i.e. NHWC for a 2d convolution
@@ -399,7 +399,7 @@ class ConvTranspose(Module):
       # dimension. Padding should be done in such a way that the start of the
       # original input data inside the padded array is located at integer
       # number of periods - otherwise the result would be circularly shifted.
-      
+
       # Compute period along each spatial dimension - it's input size scaled
       # by the stride.
       scaled_x_dims = [
@@ -416,7 +416,7 @@ class ConvTranspose(Module):
       # "+1" on the left (and not on the right) represents a convention for
       # aligning even-sized kernels.
       total_pad = [((size_diff + 1) // 2, size_diff // 2) for size_diff in size_diffs]
-      y = np.pad(y, [(0, 0)] + total_pad + [(0, 0)])
+      y = jnp.pad(y, [(0, 0)] + total_pad + [(0, 0)])
       # Wrap the result periodically around each spatial dimension,
       # one by one.
       for i in range(1, y.ndim - 1):
